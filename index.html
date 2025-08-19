@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Payment Methods</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: url('https://files.catbox.moe/cxxp7n.jpg') no-repeat center center fixed;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    header {
+      text-align: center;
+      padding: 25px;
+      font-size: 24px;
+      font-weight: bold;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(5px);
+      animation: fadeInDown 1s ease;
+    }
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      animation: fadeInUp 1.2s ease;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, background 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      background: rgba(255,255,255,0.12);
+    }
+    .card img {
+      width: 100px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      animation: pop 0.8s ease;
+    }
+    .card h3 {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+    .card p {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #4facfe, #00f2fe);
+      color: #black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+    button:hover {
+      transform: scale(1.07);
+      box-shadow: 0 0 12px #00f2feaa;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      background: rgba(255,255,255,0.05);
+      margin-top: 40px;
+      animation: fadeInUp 1s ease;
+    }
+
+    /* Popup Modal */
+    #popup {
+      display:none;
+      position:fixed;
+      top:0; left:0; width:100%; height:100%; 
+      background:rgba(0,0,0,0.8);
+      justify-content:center;
+      align-items:center;
+      animation: fadeIn 0.5s ease;
+    }
+    #popup .box {
+      background:#fff;
+      color:#fff;
+      padding:20px;
+      border-radius:12px;
+      text-align:center;
+      max-width:320px;
+      animation: scaleUp 0.5s ease;
+    }
+    #popup img {
+      width:220px;
+      margin-top:10px;
+    }
+
+    /* Toast */
+    #toast {
+      visibility: hidden;
+      min-width: 250px;
+      margin-left: -125px;
+      background: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 8px;
+      padding: 12px;
+      position: fixed;
+      z-index: 1;
+      left: 50%;
+      bottom: 30px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.5s, bottom 0.5s;
+    }
+    #toast.show {
+      visibility: visible;
+      opacity: 1;
+      bottom: 50px;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {opacity:0;}
+      to {opacity:1;}
+    }
+    @keyframes fadeInDown {
+      from {opacity:0; transform: translateY(-30px);}
+      to {opacity:1; transform: translateY(0);}
+    }
+    @keyframes fadeInUp {
+      from {opacity:0; transform: translateY(30px);}
+      to {opacity:1; transform: translateY(0);}
+    }
+    @keyframes scaleUp {
+      from {transform: scale(0.7);}
+      to {transform: scale(1);}
+    }
+    @keyframes pop {
+      from {transform: scale(0.8);}
+      to {transform: scale(1);}
+    }
+  </style>
+</head>
+<body>
+  <header>💳 Metode Pembayaran Satria</header>
+
+  <div class="container">
+    <!-- QRIS -->
+    <div class="card">
+      <h3>QRIS</h3>
+      <p>Scan QRIS untuk bayar langsung</p>
+      <button onclick="showInfo('qris')">Tampilkan QR</button>
+    </div>
+
+    <!-- Dana -->
+    <div class="card"
+      <h3>Dana</h3>
+      <p>Nomor: 083153577926</p>
+      <button onclick="copyText('083153577926')">Salin Nomor</button>
+    </div>
+
+    <!-- OVO -->
+    <div class="card">
+      <h3>Gopay</h3>
+      <p>Nomor: 085959131752</p>
+      <button onclick="copyText('085959131752')">Salin Nomor</button>
+    </div>
+
+    <!-- Bank Transfer -->
+    <div class="card">
+      <img src="https://i.ibb.co/rxLrjqF/bank.png" alt="Bank">
+      <h3>Bank Transfer</h3>
+      <p>BCA - SOON</p>
+      <button onclick="copyText('soon')">Salin Rekening</button>
+    </div>
+  </div>
+
+  <footer>© 2025 Payment Satria - All Rights Reserved</footer>
+
+  <!-- Popup Modal -->
+  <div id="popup">
+    <div class="box">
+      <h3>Scan QRIS</h3>
+      <img src="https://files.catbox.moe/zzogfz.jpg" alt="QRIS">
+      <br><br>
+      <button onclick="closePopup()">Tutup</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast">✅ Disalin ke clipboard</div>
+
+  <script>
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("✅ Disalin: " + text);
+      });
+    }
+
+    function showInfo(type) {
+      if(type === 'qris') {
+        document.getElementById("popup").style.display = "flex";
+      }
+    }
+
+    function closePopup() {
+      document.getElementById("popup").style.display = "none";
+    }
+
+    function showToast(msg) {
+      let toast = document.getElementById("toast");
+      toast.innerHTML = msg;
+      toast.className = "show";
+      setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2500);
+    }
+  </script>
+</body>
+</html>
